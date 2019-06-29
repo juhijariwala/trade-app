@@ -1,0 +1,8 @@
+version: '3'
+services:
+  trade-publisher:
+    image: trade-publisher
+    build: ./trade-publisher
+    ports:
+      - 8080:8080
+
