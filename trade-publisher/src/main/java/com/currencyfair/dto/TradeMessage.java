@@ -4,7 +4,6 @@ import com.currencyfair.constants.Country;
 import com.currencyfair.constants.Currency;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public class TradeMessage {
@@ -16,7 +15,7 @@ public class TradeMessage {
     private Double rate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "DD-MMMM-yy")
     private Date timePlaced;
-    private Country country;
+    private Country originatingCountry;
 
     public String getUserId() {
         return userId;
@@ -46,7 +45,8 @@ public class TradeMessage {
         return timePlaced;
     }
 
-    public Country getCountry() {
-        return country;
+    public Country getOriginatingCountry() {
+        return originatingCountry;
     }
+
 }
