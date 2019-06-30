@@ -1,4 +1,4 @@
-package com.currencyfair.controller;
+package com.currencyfair.tradepublisher.controller;
 
 import org.junit.Before;
 import org.junit.Test;

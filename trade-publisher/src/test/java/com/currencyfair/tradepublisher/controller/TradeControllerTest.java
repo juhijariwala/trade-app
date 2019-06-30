@@ -1,6 +1,6 @@
-package com.currencyfair.controller;
+package com.currencyfair.tradepublisher.controller;
 
-import com.currencyfair.service.SqsService;
+import com.currencyfair.tradepublisher.service.SqsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

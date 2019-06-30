@@ -1,4 +1,4 @@
-package com.currencyfair.constants;
+package com.currencyfair.tradepublisher.constants;
 
 public enum Currency {
     EUR,

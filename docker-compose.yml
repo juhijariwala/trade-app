@@ -5,8 +5,18 @@ services:
     build: ./trade-publisher
     ports:
       - 8080:8080
+    links:
+      - queue:queue
   queue:
     image: s12v/elasticmq
     ports:
       - "9324:9324"
+  trade-processor:
+    image: trade-processor
+    build: ./trade-processor
+    ports:
+      - 8090:8080
+    links:
+      - queue:queue
+
 

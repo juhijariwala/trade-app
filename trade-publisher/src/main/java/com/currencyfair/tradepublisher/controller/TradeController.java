@@ -1,7 +1,7 @@
-package com.currencyfair.controller;
+package com.currencyfair.tradepublisher.controller;
 
-import com.currencyfair.service.SqsService;
-import com.currencyfair.dto.TradeMessage;
+import com.currencyfair.tradepublisher.service.SqsService;
+import com.currencyfair.tradepublisher.dto.TradeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

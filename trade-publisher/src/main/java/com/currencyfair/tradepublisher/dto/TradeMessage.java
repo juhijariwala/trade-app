@@ -1,7 +1,7 @@
-package com.currencyfair.dto;
+package com.currencyfair.tradepublisher.dto;
 
-import com.currencyfair.constants.Country;
-import com.currencyfair.constants.Currency;
+import com.currencyfair.tradepublisher.constants.Country;
+import com.currencyfair.tradepublisher.constants.Currency;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;

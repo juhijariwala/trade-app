@@ -1,4 +1,4 @@
-package com.currencyfair.service;
+package com.currencyfair.tradepublisher.service;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -7,7 +7,7 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.AmazonSQSException;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
-import com.currencyfair.dto.TradeMessage;
+import com.currencyfair.tradepublisher.dto.TradeMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

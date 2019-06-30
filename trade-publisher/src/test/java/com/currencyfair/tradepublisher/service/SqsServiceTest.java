@@ -1,4 +1,4 @@
-package com.currencyfair.service;
+package com.currencyfair.tradepublisher.service;
 
 import akka.stream.BindFailedException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -8,7 +8,7 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
 import com.amazonaws.services.sqs.model.ReceiveMessageResult;
-import com.currencyfair.dto.TradeMessage;
+import com.currencyfair.tradepublisher.dto.TradeMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticmq.rest.sqs.SQSRestServer;
 import org.elasticmq.rest.sqs.SQSRestServerBuilder;
