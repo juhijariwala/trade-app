@@ -1,9 +1,11 @@
 import {Component} from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import { MouseEvent } from '@agm/core';
-// import {google} from "@agm/core/services/google-maps-types";
-declare var google: any;
+import {MouseEvent} from '@agm/core';
+import {select} from 'd3-selection';
+import {geomap} from 'd3-geomap';
+import {countries} from "./countries";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,10 +18,9 @@ export class AppComponent {
   webSocketEndPoint: string = 'http://localhost:8090/live-stream';
   topic: string = "/topic/trades";
   stompClient: any;
-  geocoder: any;
 
   // google maps zoom level
-  zoom: number = 3;
+  zoom: number = 1;
 
   // initial center position for the map
   lat: number = 51.678418;
@@ -27,48 +28,20 @@ export class AppComponent {
 
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`)
-  }
 
-  mapClicked($event: MouseEvent) {
-    this.markers.push({
-      lat: $event.coords.lat,
-      lng: $event.coords.lng,
-      draggable: true
-    });
   }
 
   markerDragEnd(m: marker, $event: MouseEvent) {
     console.log('dragEnd', m, $event);
   }
 
-  markers: marker[] = [
-    {
-      lat: 51.673858,
-      lng: 7.815982,
-      label: 'A',
-      draggable: true
-    },
-    {
-      lat: 51.373858,
-      lng: 7.215982,
-      label: 'B',
-      draggable: false
-    },
-    {
-      lat: 51.723858,
-      lng: 7.895982,
-      label: 'C',
-      draggable: true
-    }
-  ]
-
-// just an interface for type safety.
-
+  markers: marker[] = []
 
   ngOnInit() {
     this._connect();
-    this.geocoder = new google.maps.Geocoder();
-    this.getCountry("India");
+    const worldMap = geomap();
+    worldMap.geofile('./node_modules/d3-geomap/src/world/countries.json');
+    worldMap.draw(select('#map'));
   }
 
   ngOnDestroy() {
@@ -81,7 +54,6 @@ export class AppComponent {
     this.stompClient = Stomp.over(ws);
     const _this = this;
     _this.stompClient.connect({}, function (frame) {
-      console.log("Here ------");
       _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
         console.log("Connected")
         _this.onMessageReceived(sdkEvent);
@@ -98,7 +70,24 @@ export class AppComponent {
 
   onMessageReceived(message) {
     console.log("Message Recieved from Server :: " + message);
-    this.message = JSON.stringify(message.body);
+    const body = JSON.parse(message.body);
+    console.log();
+    Object.keys(body).forEach(key => {
+      const val = body[key];
+      const code = val.country.replace("en_", "");
+      let country = countries.find(country => country.countryCode === code);
+      let info = "Total transactions: "+ val.total + " "+ val.currency;
+      let marker = <marker>{
+        lat: country.latitude,
+        lng: country.longitude,
+        label: country.name,
+        draggable: false,
+        info: info
+      };
+      this.markers.push(marker)
+    });
+
+    this.message = JSON.stringify(body);
   }
 
   errorCallBack(error) {
@@ -108,24 +97,6 @@ export class AppComponent {
     }, 5000);
   }
 
-
-
-  getCountry(country) {
-    this.geocoder.geocode( { 'address': country }, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        console.log(results);
-        // results[0].geometry.location
-        // map.setCenter(results[0].geometry.location);
-        // var marker = new google.maps.Marker({
-        //   map: map,
-        //   position: results[0].geometry.location
-        // });
-      } else {
-        alert("Geocode was not successful for the following reason: " + status);
-      }
-    });
-  }
-
 }
 
 interface marker {
@@ -133,4 +104,5 @@ interface marker {
   lng: number;
   label?: string;
   draggable: boolean;
+  info: string
 }
