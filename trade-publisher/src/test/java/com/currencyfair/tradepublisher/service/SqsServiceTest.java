@@ -8,8 +8,6 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
 import com.amazonaws.services.sqs.model.ReceiveMessageResult;
-import com.currencyfair.tradepublisher.dto.TradeMessage;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticmq.rest.sqs.SQSRestServer;
 import org.elasticmq.rest.sqs.SQSRestServerBuilder;
 import org.junit.After;
@@ -20,7 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class SqsServiceTest {
-    private static final String QUEUE_NAME = "trade";
+    private static final String QUEUE_NAME = "TradeQueue";
     private static final int SQS_PORT = 9324;
     private static final String SQS_HOSTNAME = "localhost";
     private SQSRestServer sqsRestServer;
@@ -48,8 +46,7 @@ public class SqsServiceTest {
             .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
             .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(enpoint, regionName))
             .build();
-        sqsClient.createQueue(QUEUE_NAME);
-        sqsService = new SqsService(enpoint, regionName, accessKey, secretKey, true);
+        sqsService = new SqsService(enpoint, regionName, accessKey, secretKey, true, QUEUE_NAME);
     }
 
     @After
@@ -63,10 +60,9 @@ public class SqsServiceTest {
         String tradeMessage = "{\"userId\": \"134256\", \"currencyFrom\": \"EUR\", \"currencyTo\": \"GBP\",\n" +
             "\"amountSell\": 1000, \"amountBuy\": 747.10, \"rate\": 0.7471,\n" +
             "\"timePlaced\" : \"24-JAN-18 10:27:44\", \"originatingCountry\" : \"FR\"}";
-        ObjectMapper mapper = new ObjectMapper();
-        TradeMessage trade = mapper.readValue(tradeMessage, TradeMessage.class);
 
-        sqsService.sendMessage(trade);
+
+        sqsService.sendMessage(tradeMessage, QUEUE_NAME);
 
         final ReceiveMessageRequest receiveMessageRequest =
             new ReceiveMessageRequest(sqsClient.getQueueUrl(QUEUE_NAME).getQueueUrl())
@@ -74,10 +70,6 @@ public class SqsServiceTest {
         ReceiveMessageResult receiveMessageResult = sqsClient.receiveMessage(receiveMessageRequest);
 
         String actualResponse = receiveMessageResult.getMessages().get(0).getBody();
-        TradeMessage actualTrade = mapper.readValue(actualResponse, TradeMessage.class);
-        assertThat(actualTrade.getUserId(), is(trade.getUserId()));
-        assertThat(actualTrade.getAmountBuy(), is(trade.getAmountBuy()));
-        assertThat(actualTrade.getCurrencyFrom(), is(trade.getCurrencyFrom()));
-        assertThat(actualTrade.getCurrencyTo(), is(trade.getCurrencyTo()));
+        assertThat(actualResponse, is(tradeMessage));
     }
 }

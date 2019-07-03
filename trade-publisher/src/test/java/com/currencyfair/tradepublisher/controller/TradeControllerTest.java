@@ -1,6 +1,7 @@
 package com.currencyfair.tradepublisher.controller;
 
 import com.currencyfair.tradepublisher.service.SqsService;
+import com.currencyfair.tradepublisher.service.TradePublisherService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,7 @@ public class TradeControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private SqsService sqsService;
+    private TradePublisherService service;
     @InjectMocks
     private TradeController tradeController;
 
