@@ -21,7 +21,7 @@
       [markerDraggable]="m.draggable"
       (dragEnd)="markerDragEnd(m, $event)">
 
-      <agm-info-window>
+      <agm-info-window [disableAutoPan]="true" [isOpen] = "true">
         <strong>{{m.info}}</strong>
       </agm-info-window>
 

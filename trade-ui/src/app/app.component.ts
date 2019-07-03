@@ -20,7 +20,7 @@ export class AppComponent {
   stompClient: any;
 
   // google maps zoom level
-  zoom: number = 1;
+  zoom: number = 2;
 
   // initial center position for the map
   lat: number = 51.678418;
@@ -76,7 +76,7 @@ export class AppComponent {
       const val = body[key];
       const code = val.country.replace("en_", "");
       let country = countries.find(country => country.countryCode === code);
-      let info = "Total transactions: "+ val.total + " "+ val.currency;
+      let info = val.total + " "+ val.currency;
       let marker = <marker>{
         lat: country.latitude,
         lng: country.longitude,
