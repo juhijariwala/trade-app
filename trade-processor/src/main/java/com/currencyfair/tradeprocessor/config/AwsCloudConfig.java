@@ -3,8 +3,10 @@ package com.currencyfair.tradeprocessor.config;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
+import com.amazonaws.services.sqs.AmazonSQSAsyncClient;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +47,8 @@ public class AwsCloudConfig {
         SimpleMessageListenerContainerFactory factory = new SimpleMessageListenerContainerFactory();
         factory.setAmazonSqs(amazonSqs);
         factory.setMaxNumberOfMessages(1);
-        factory.setWaitTimeOut(10);
+        factory.setWaitTimeOut(20);
+        factory.setVisibilityTimeout(3600);
         factory.setQueueMessageHandler(new QueueMessageHandler());
         return factory;
     }

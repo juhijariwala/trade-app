@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 @EnableAsync
 public class QueueListener {
 
-    public static final String QUEUE_NAME = "trade";
+    public static final String QUEUE_NAME = "TradeQueue.fifo";
     private final QueueService oneService;
     private static final Logger log = LoggerFactory.getLogger(QueueListener.class);
 

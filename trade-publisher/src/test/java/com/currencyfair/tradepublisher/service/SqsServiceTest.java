@@ -49,7 +49,7 @@ public class SqsServiceTest {
             .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(enpoint, regionName))
             .build();
         sqsClient.createQueue(QUEUE_NAME);
-        sqsService = new SqsService(enpoint, regionName, accessKey, secretKey);
+        sqsService = new SqsService(enpoint, regionName, accessKey, secretKey, true);
     }
 
     @After

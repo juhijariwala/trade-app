@@ -10,8 +10,7 @@
     [longitude]="lng"
     [zoom]="zoom"
     [disableDefaultUI]="false"
-    [zoomControl]="false"
-    (mapClick)="mapClicked($event)">
+    [zoomControl]="false">
 
     <agm-marker
       *ngFor="let m of markers; let i = index"

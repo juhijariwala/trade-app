@@ -1,4 +1,7 @@
 version: '3'
+networks:
+  webappnetwork:
+    driver: bridge
 services:
   trade-publisher:
     image: trade-publisher
@@ -7,10 +10,18 @@ services:
       - 8080:8080
     links:
       - queue:queue
+    environment:
+      - IS_LOCAL_QUEUE=true
+      - SQS_URL=http://queue:9324
+      - AWS_REGION=eu-west-1
+    networks:
+      - webappnetwork
   queue:
     image: s12v/elasticmq
     ports:
       - "9324:9324"
+    networks:
+      - webappnetwork
   trade-processor:
     image: trade-processor
     build: ./trade-processor
@@ -18,5 +29,23 @@ services:
       - 8090:8080
     links:
       - queue:queue
+    environment:
+      - SQS_URL=http://queue:9324
+      - AWS_REGION=eu-west-1
+    networks:
+      - webappnetwork
+  trade-ui:
+    image: trade-ui
+    build: ./trade-ui
+    ports:
+      - 4201:80
+    environment:
+      - BACKEND_API_URL=http://trade-processor:8090/live-stream
+    links:
+      - trade-processor:trade-processor
+    networks:
+      - webappnetwork
+
+
 
 
