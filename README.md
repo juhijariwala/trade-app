@@ -56,7 +56,9 @@ ab8a92197fef        trade-publisher     "/bin/sh -c 'java -j…"   About an hour
   
 * POST messgae on trade-publisher
 ```
-curl -d '{"userId": "2364", "currencyFrom": "NOK", "currencyTo": "INR","amountSell": 3444, "amountBuy": 100.10, "rate": 0.451,"timePlaced" : "24-JAN-18 10:27:44", "originatingCountry" : "IN"}'\
+curl -d '{"userId": "134256", "currencyFrom": "EUR", "currencyTo": "GBP",
+         "amountSell": 1000, "amountBuy": 747.10, "rate": 0.7471,
+         "timePlaced" : "24-JAN-18 10:27:44", "originatingCountry" : "FR"}'\
  -H "Content-Type:application/json"\
  -X POST http://localhost:8080/trade-publisher/trade
 
