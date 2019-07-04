@@ -1,6 +1,7 @@
 package com.currencyfair.tradepublisher.service;
 
 import com.currencyfair.tradepublisher.dto.TradeMessage;
+import com.currencyfair.tradepublisher.validation.Error;
 import com.currencyfair.tradepublisher.validation.ValidationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,13 +34,20 @@ public class TradePublisherService {
         try {
 
             if (!ISO_COUNTRIES.contains(tradeMessage.getOriginatingCountry())) {
-                throw new ValidationException("Invalid Country code");
+                throw new ValidationException(Error.INVALID_COUNTRY);
             }
             try {
                 Currency.getInstance(tradeMessage.getCurrencyFrom());
                 Currency.getInstance(tradeMessage.getCurrencyTo());
             } catch (IllegalArgumentException e) {
-                throw new ValidationException("Invalid Currency Code");
+                throw new ValidationException(Error.INVALID_CURRENCY);
+            }
+
+            boolean isValidExchangeRate = tradeMessage.getAmountSell() > tradeMessage.getAmountBuy() ?
+                tradeMessage.getAmountSell() * tradeMessage.getRate() == tradeMessage.getAmountBuy() :
+                tradeMessage.getAmountBuy() * tradeMessage.getRate() == tradeMessage.getAmountSell();
+            if(!isValidExchangeRate){
+                throw  new ValidationException(Error.INVALID_BUY_SELL);
             }
             String message = objectMapper.writeValueAsString(tradeMessage);
             sqsService.sendMessage(message, queueName);

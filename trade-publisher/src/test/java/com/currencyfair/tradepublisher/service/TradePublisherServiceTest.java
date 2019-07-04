@@ -66,7 +66,7 @@ public class TradePublisherServiceTest {
             tradePublisherService.publishMessage(tradeMessage);
             fail();
         }catch (ValidationException e){
-            assertThat(e.getMsg(), is("Invalid Currency Code"));
+            assertThat(e.getMsg(), is("Invalid Currency code"));
         }
         verify(sqsService,never()).sendMessage(anyString(), anyString());
     }
@@ -81,10 +81,35 @@ public class TradePublisherServiceTest {
             tradePublisherService.publishMessage(tradeMessage);
             fail();
         }catch (ValidationException e){
-            assertThat(e.getMsg(), is("Invalid Currency Code"));
+            assertThat(e.getMsg(), is("Invalid Currency code"));
         }
 
         verify(sqsService,never()).sendMessage(anyString(), anyString());
-
     }
+
+    @Test
+    public void shouldThrowExceptionIfInvalidSellOrBuyAmount() throws IOException {
+        String messgae = "{\"userId\":\"134256\",\"currencyFrom\":\"EUR\",\"currencyTo\":\"INR\",\"amountSell\":1000, \"amountBuy\": 1000.10,\"rate\":0.7471,\"timePlaced\":\"24-JAN-1810:27:44\",\"originatingCountry\":\"FR\"}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        TradeMessage tradeMessage = objectMapper.readValue(messgae, TradeMessage.class);
+
+        try{
+            tradePublisherService.publishMessage(tradeMessage);
+            fail();
+        }catch (ValidationException e){
+            assertThat(e.getMsg(), is("Please enter valid sell or buy rate according to rate "));
+        }
+
+        verify(sqsService,never()).sendMessage(anyString(), anyString());
+    }
+    @Test
+    public void shouldThrowExceptionIfInvalidSellOrBuyAmountPassed() throws IOException {
+        String messgae = "{\"userId\":\"134256\",\"currencyFrom\":\"USD\",\"currencyTo\":\"INR\",\"amountSell\":747.10, \"amountBuy\": 1000,\"rate\":0.7471,\"timePlaced\":\"24-JAN-1810:27:44\",\"originatingCountry\":\"IN\"}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        TradeMessage tradeMessage = objectMapper.readValue(messgae, TradeMessage.class);
+          tradePublisherService.publishMessage(tradeMessage);
+        String actualMessage = objectMapper.writeValueAsString(tradeMessage);
+        verify(sqsService).sendMessage(actualMessage, TEST_QUEUE);
+    }
+
 }
