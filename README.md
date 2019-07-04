@@ -52,8 +52,8 @@ ab8a92197fef        trade-publisher     "/bin/sh -c 'java -j…"   About an hour
 6d1830f9e33f        s12v/elasticmq      "java -Djava.net.pre…"   About an hour ago   Up About an hour    0.0.0.0:9324->9324/tcp   trade-app_queue_1
 ```
 
-* Open ```http://localhost:4201``` on browser to view messages
-
+* Open your browser and navigate to ```http://localhost:4201```. You should see the Web Page:
+  
 * POST messgae on trade-publisher
 ```
 curl -d '{"userId": "2364", "currencyFrom": "NOK", "currencyTo": "INR","amountSell": 3444, "amountBuy": 100.10, "rate": 0.451,"timePlaced" : "24-JAN-18 10:27:44", "originatingCountry" : "IN"}'\
@@ -61,5 +61,4 @@ curl -d '{"userId": "2364", "currencyFrom": "NOK", "currencyTo": "INR","amountSe
  -X POST http://localhost:8080/trade-publisher/trade
 
 ```
-Open ```http://localhost:4201``` on browser to view messages
-
+Check the UI. You should be able to see the messages updating real time. 
