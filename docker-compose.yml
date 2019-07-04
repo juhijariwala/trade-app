@@ -36,9 +36,13 @@ services:
       - webappnetwork
   trade-ui:
     image: trade-ui
-    build: ./trade-ui
+    build:
+      context: ./trade-ui
+      args:
+        - API_KEY=${API_KEY}
     ports:
       - 4201:80
+
     environment:
       - BACKEND_API_URL=http://trade-processor:8090/live-stream
     links:

@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms'
 import { AgmCoreModule } from '@agm/core';
+import {environment} from '../environments/environment';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -14,7 +16,7 @@ import { AgmCoreModule } from '@agm/core';
     AppRoutingModule,
     FormsModule,
     AgmCoreModule.forRoot({
-      apiKey: '***REMOVED***'
+      apiKey: environment.apiKey
     })
   ],
   providers: [],

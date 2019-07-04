@@ -2,9 +2,8 @@ import {Component} from '@angular/core';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {MouseEvent} from '@agm/core';
-import {select} from 'd3-selection';
-import {geomap} from 'd3-geomap';
 import {countries} from "./countries";
+import {environment} from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +14,7 @@ export class AppComponent {
   title = 'Trade App';
   message: String;
   name: string;
-  webSocketEndPoint: string = 'http://localhost:8090/live-stream';
+  webSocketEndPoint: string = environment.tradeProcessorUrl;
   topic: string = "/topic/trades";
   stompClient: any;
 
@@ -40,9 +39,6 @@ export class AppComponent {
 
   ngOnInit() {
     this._connect();
-    const worldMap = geomap();
-    worldMap.geofile('./node_modules/d3-geomap/src/world/countries.json');
-    worldMap.draw(select('#map'));
   }
 
   ngOnDestroy() {

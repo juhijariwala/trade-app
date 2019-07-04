@@ -1,32 +1,3 @@
-#FROM node:12.2.0
-#
-## install chrome for protractor tests
-#RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-#RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-#RUN apt-get update && apt-get install -yq google-chrome-stable
-#
-## set working directory
-#WORKDIR /app
-#
-## add `/app/node_modules/.bin` to $PATH
-#ENV PATH /app/node_modules/.bin:$PATH
-#
-## install and cache app dependencies
-#COPY package.json /app/package.json
-#RUN npm install
-#RUN npm install -g @angular/cli@7.3.9
-#
-## add app
-#COPY . /app
-#
-## start app
-#CMD ng serve --host 0.0.0.0
-#
-#
-#FROM nginx:1.13.12-alpine
-#COPY --from=node /app/dist/angular-docker /usr/share/nginx/html
-
-
 
 ### STAGE 1: Build ###
 
@@ -40,9 +11,12 @@ COPY package.json package-lock.json ./
 RUN npm ci && mkdir /ng-app && mv ./node_modules ./ng-app
 
 WORKDIR /ng-app
-
+ARG API_KEY
 COPY . .
-
+RUN sed -i "s|\$API_KEY|${API_KEY}|g" ./src/environments/environment.prod.ts
+RUN cat ./src/environments/environment.prod.ts
+RUN sed -i "s|\$API_KEY|${API_KEY}|g" ./src/environments/environment.ts
+RUN cat ./src/environments/environment.ts
 ## Build the angular app in production mode and store the artifacts in dist folder
 
 RUN npm run ng build -- --prod --output-path=dist
