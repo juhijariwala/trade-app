@@ -2,17 +2,17 @@ package com.currencyfair.tradeprocessor.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
-import java.util.Locale;
 
 public class TradeMessage {
     private String userId;
     private Currency currencyFrom;
     private Currency currencyTo;
-    private Double amountSell;
-    private Double amountBuy;
-    private Double rate;
+    private BigDecimal amountSell;
+    private BigDecimal amountBuy;
+    private BigDecimal rate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "DD-MMMM-yy")
     private Date timePlaced;
     private String originatingCountry;
@@ -29,15 +29,15 @@ public class TradeMessage {
         return currencyTo;
     }
 
-    public Double getAmountSell() {
+    public BigDecimal getAmountSell() {
         return amountSell;
     }
 
-    public Double getAmountBuy() {
+    public BigDecimal getAmountBuy() {
         return amountBuy;
     }
 
-    public Double getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 

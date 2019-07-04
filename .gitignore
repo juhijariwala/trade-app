@@ -6,3 +6,5 @@ trade-publisher/.mvn/repository/
 trade-processor/.idea/
 trade-processor/target/
 trade-processor/.mvn/repository/
+
+docker-compose-aws.yml

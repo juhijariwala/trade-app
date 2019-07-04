@@ -12,7 +12,7 @@ import {countries} from "./countries";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'angular8-springboot-websocket';
+  title = 'Trade App';
   message: String;
   name: string;
   webSocketEndPoint: string = 'http://localhost:8090/live-stream';
@@ -35,7 +35,8 @@ export class AppComponent {
     console.log('dragEnd', m, $event);
   }
 
-  markers: marker[] = []
+  markers: marker[] = [];
+  coutnrywiseStats: Map<string, countryWiseStat> = new Map();
 
   ngOnInit() {
     this._connect();
@@ -76,15 +77,22 @@ export class AppComponent {
       const val = body[key];
       const code = val.country.replace("en_", "");
       let country = countries.find(country => country.countryCode === code);
-      let info = val.total + " "+ val.currency;
+      let total = val.total + " " + val.currency;
       let marker = <marker>{
         lat: country.latitude,
         lng: country.longitude,
         label: country.name,
         draggable: false,
-        info: info
+        info: total
+      };
+      let countryWiseStat = <countryWiseStat>{
+        country: country.name,
+        total: total,
+        minRate: val.minExchangeRate,
+        maxRate: val.maxExchangeRate,
       };
       this.markers.push(marker)
+      this.coutnrywiseStats.set(country.name, countryWiseStat)
     });
 
     this.message = JSON.stringify(body);
@@ -105,4 +113,11 @@ interface marker {
   label?: string;
   draggable: boolean;
   info: string
+}
+
+interface countryWiseStat {
+  country: string;
+  total: string;
+  minRate: number;
+  maxRate: number;
 }
