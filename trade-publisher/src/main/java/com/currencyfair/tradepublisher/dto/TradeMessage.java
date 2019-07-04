@@ -1,6 +1,5 @@
 package com.currencyfair.tradepublisher.dto;
 
-import com.currencyfair.tradepublisher.validation.ValidCurrencyCode;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -14,7 +13,6 @@ public class TradeMessage {
     private Double rate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "DD-MMMM-yy")
     private Date timePlaced;
-    @ValidCurrencyCode
     private String originatingCountry;
 
     public String getUserId() {
