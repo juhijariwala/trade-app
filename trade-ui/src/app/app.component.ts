@@ -71,19 +71,21 @@ export class AppComponent {
     console.log();
     Object.keys(body).forEach(key => {
       const val = body[key];
-      const code = val.country.replace("en_", "");
+      const code = val.originatingCountry.replace("en_", "");
       let country = countries.find(country => country.countryCode === code);
-      let total = val.total + " " + val.currency;
       let marker = <marker>{
         lat: country.latitude,
         lng: country.longitude,
         label: country.name,
         draggable: false,
-        info: total
+        info: val.totalTransactions
       };
       let countryWiseStat = <countryWiseStat>{
+        currencySymbol: val.currencyPair,
         country: country.name,
-        total: total,
+        totalAmountSent: val.totalAmountSent,
+        totalAmountReceived: val.totalAmountReceived,
+        totalTransactions: val.totalTransactions,
         minRate: val.minExchangeRate,
         maxRate: val.maxExchangeRate,
       };
@@ -113,7 +115,10 @@ interface marker {
 
 interface countryWiseStat {
   country: string;
-  total: string;
+  currencySymbol: string;
+  totalAmountSent: string;
+  totalAmountReceived: string;
+  totalTransactions: string;
   minRate: number;
   maxRate: number;
 }

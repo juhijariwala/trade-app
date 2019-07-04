@@ -13,18 +13,20 @@
         <table class="table table-striped table-sm">
           <thead>
           <tr>
-            <th>Country</th>
-            <th>Total</th>
+            <th>Symbol</th>
+            <th>Total Amount Exchanged</th>
             <th>Min Rate</th>
             <th>Max Rate</th>
+            <th>Originating Country</th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let stat of coutnrywiseStats | keyvalue">
-            <td>{{stat.value.country}}</td>
-            <td>{{stat.value.total}}</td>
+            <td>{{stat.value.currencySymbol}}</td>
+            <td>{{stat.value.totalAmountSent}}/{{stat.value.totalAmountReceived}}</td>
             <td>{{stat.value.minRate}}</td>
             <td>{{stat.value.maxRate}}</td>
+            <td>{{stat.value.country}}</td>
           </tr>
           </tbody>
         </table>

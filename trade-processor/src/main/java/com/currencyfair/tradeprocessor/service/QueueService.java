@@ -15,6 +15,6 @@ public class QueueService {
 
     public void handle(String message) {
         log.info("Handling started for queue one message: {}", message);
-        transactionAnalyzer.ananlyzeAndPush(message);
+        transactionAnalyzer.generateAndPush(message);
     }
 }
